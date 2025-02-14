@@ -5,6 +5,9 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-
+rl.question("Hey man! Christ Loves You", (resolve) => {
+    console.log("I know: ", resolve)
+    rl.close();
+})
 
 
