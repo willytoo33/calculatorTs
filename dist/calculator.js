@@ -25,6 +25,7 @@ class Calculator {
         this.registerOperation("+", (a, b) => a + b);
         this.registerOperation("-", (a, b) => a - b);
         this.registerOperation("/", (a, b) => a / b);
+        this.registerOperation("*", (a, b) => a * b);
     }
     registerOperation(symbol, operation) {
         this.operations[symbol] = operation;

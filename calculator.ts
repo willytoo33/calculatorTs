@@ -27,6 +27,8 @@ export class Calculator{
     this.registerOperation("+", (a: number, b: number) => a + b)
     this.registerOperation("-", (a: number, b: number) => a - b)
     this.registerOperation("/", (a: number, b: number) => a/b)
+    this.registerOperation("*", (a: number, b: number) => a*b)
+
   }
 
   registerOperation(symbol: string, operation: (a: number, b: number) => number): void{
