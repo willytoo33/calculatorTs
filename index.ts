@@ -6,7 +6,7 @@ const readlineUtil = new ReadlineUtils();
 
 let num1: number;
 let num2: number;
-let operand: any;
+let operand: string;
 
 
 async function quiz () {
