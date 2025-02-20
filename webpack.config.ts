@@ -1,12 +1,14 @@
 import path from 'path';
+import webpack from 'webpack';
 import { Configuration, WebpackPluginInstance } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const config: Configuration & { devServer?: any } = {
   // Configuration for both development and production
+  mode: 'development',
   entry: './index.ts',
   output: {
-    filename: 'bundle.[contenthash].js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
@@ -18,30 +20,33 @@ const config: Configuration & { devServer?: any } = {
   },
   module: {
     rules: [
+      // Process ts files
       {
         test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      // Optionally process css if importing it in the ts files
       {
-        test: /\.css$/i,
+        test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
     ],
   },
   plugins: [
+    // Generates a proper index.html in the dist folder using the template
     new HtmlWebpackPlugin({
-      template: './src/interface/interface.html',
-      filename: './src/interface/interface.html',
-      minify: true,
+      template: path.resolve(__dirname, 'src', 'interface', 'interface.html'),
+      filename: 'index.html',
+      // minify: true,
     }) as unknown as WebpackPluginInstance,
   ],
 
   // Development-specific configuration
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.resolve(__dirname, 'dist'),
     },
     compress: true,
     port: 9000,
@@ -51,13 +56,4 @@ const config: Configuration & { devServer?: any } = {
   },
 };
 
-export default (env: { production?: boolean }) => {
-  if (env.production) {
-    config.mode = 'production';
-    config.devtool = 'source-map';
-    config.output!.filename = 'bundle.[contenthash].js';
-  } else {
-    config.mode = 'development';
-  }
-  return config;
-};
+export default config;
