@@ -1,29 +1,40 @@
 
 export class Calculator{
-  private operations: {
-    [key: string]: (a: number, b: number) => number
-  } = {};
+  private operations: Map<string, (args: number[]) => number> = new Map();
+  private operatorArity: Map<string, number> = new Map();
 
   constructor(){
-    this.registerOperation("+", (a: number, b: number) => a + b)
-    this.registerOperation("-", (a: number, b: number) => a - b)
-    this.registerOperation("/", (a: number, b: number) => a/b)
-    this.registerOperation("*", (a: number, b: number) => a*b)
+    this.registerOperation("+", 2, (args) => args[0] + args[1])
+    this.registerOperation("-", 2, (args) => args[0] - args[2])
+    this.registerOperation("/", 2, (args) => args[0] / args[1])
+    this.registerOperation("*", 2, (args) => args[0] * args[1])
   }
 
-  registerOperation(symbol: string, operation: (a: number, b: number) => number): void{
-    this.operations[symbol] = operation;
+  registerOperation(
+    symbol: string, 
+    arity: number, 
+    operation: (args: number[])=> number
+  ): void{
+    this.operations.set(symbol, operation);
+    this.operatorArity.set(symbol, arity);
   }
 
-  calculate(operand: string, a: number, b: number){
-    const operation = this.operations[operand]
-    if (!operation) {
-      console.log("The Symbol `${operand}` is not Valid!")
+  // Calculator Overload Method
+  calculator(expression: string): number;
+  calculator(operand: string, a: number, b: number): number;
+  
+  calculator(input: string, a?: number, b?: number){
+    if (typeof a === 'number' && typeof b === 'number') {
+      const operation = this.operations.get(input);
+      if(!operation) {
+        throw new Error (`Invalid operator ${input}`)
+      }
+      return operation([a,b])
+    } else {
+      // Assume an operation like "a + b"
+      const [left, operand, right] = input.split(' ');
+      return this.calculator(operand, parseFloat(left), parseFloat(right))
     }
-    return operation(a, b)
   }
 
-  add(a: number, b: number): number {
-    return a + b
-  }
 }
