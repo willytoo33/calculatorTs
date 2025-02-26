@@ -16,7 +16,7 @@
   \******************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst calculator_1 = __webpack_require__(/*! ./src/calculator */ \"./src/calculator.ts\");\n__webpack_require__(/*! ./src/interface/style.css */ \"./src/interface/style.css\");\ndocument.addEventListener('DOMContentLoaded', () => {\n    new calculator_1.Calculator();\n});\n// interfaceContr = new interfaceController();\n\n\n//# sourceURL=webpack://calculatorts/./index.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst calculator_1 = __webpack_require__(/*! ./src/calculator */ \"./src/calculator.ts\");\n__webpack_require__(/*! ./src/interface/style.css */ \"./src/interface/style.css\");\n__webpack_require__(/*! ./src/controllers/interfaceController */ \"./src/controllers/interfaceController.ts\");\n// { interfaceController } from\n// interfaceController.getInstance();\ndocument.addEventListener('DOMContentLoaded', () => {\n    new calculator_1.Calculator();\n});\n\n\n//# sourceURL=webpack://calculatorts/./index.ts?");
 
 /***/ }),
 
@@ -117,6 +117,16 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 /***/ ((__unused_webpack_module, exports) => {
 
 eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.Calculator = void 0;\nclass Calculator {\n    constructor() {\n        this.operations = new Map();\n        this.operatorArity = new Map();\n        this.registerOperation(\"+\", 2, (args) => args[0] + args[1]);\n        this.registerOperation(\"-\", 2, (args) => args[0] - args[2]);\n        this.registerOperation(\"/\", 2, (args) => args[0] / args[1]);\n        this.registerOperation(\"*\", 2, (args) => args[0] * args[1]);\n    }\n    registerOperation(symbol, arity, operation) {\n        this.operations.set(symbol, operation);\n        this.operatorArity.set(symbol, arity);\n    }\n    calculator(input, a, b) {\n        if (typeof a === 'number' && typeof b === 'number') {\n            const operation = this.operations.get(input);\n            if (!operation) {\n                throw new Error(`Invalid operator ${input}`);\n            }\n            return operation([a, b]);\n        }\n        else {\n            // Assume an operation like \"a + b\"\n            const [left, operand, right] = input.split(' ');\n            return this.calculator(operand, parseFloat(left), parseFloat(right));\n        }\n    }\n}\nexports.Calculator = Calculator;\n\n\n//# sourceURL=webpack://calculatorts/./src/calculator.ts?");
+
+/***/ }),
+
+/***/ "./src/controllers/interfaceController.ts":
+/*!************************************************!*\
+  !*** ./src/controllers/interfaceController.ts ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.interfaceController = void 0;\nclass interfaceController {\n    constructor() {\n        this.display = document.getElementById('display');\n        this.initializeEventListeners();\n    }\n    // public static getInstance(): interfaceController {\n    //     if (!interfaceController.instance) {\n    //         interfaceController.instance = new interfaceController();\n    //     }\n    //     return interfaceController.instance;\n    // }\n    initializeEventListeners() {\n        var _a, _b;\n        // Number Buttons\n        document.querySelectorAll('.number').forEach(button => {\n            button.addEventListener('click', () => {\n                this.appendToDisplay(button.textContent || '');\n            });\n        });\n        // Operator Buttons \n        document.querySelectorAll('.operator').forEach(button => {\n            button.addEventListener('click', () => {\n                this.appendToDisplay(button.textContent || '');\n            });\n        });\n        // Equal Button\n        (_a = document.querySelector('.equal')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {\n            this.calculate();\n        });\n        // Clear button\n        (_b = document.querySelector('.clear')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {\n            this.clearDisplay();\n        });\n    }\n    appendToDisplay(value) {\n        this.display.value += value;\n    }\n    calculate() {\n        const result = this.display.value;\n        console.log(\"Appended Result: \", result);\n    }\n    clearDisplay() {\n        this.display.value = '';\n    }\n}\nexports.interfaceController = interfaceController;\nnew interfaceController();\n\n\n//# sourceURL=webpack://calculatorts/./src/controllers/interfaceController.ts?");
 
 /***/ }),
 

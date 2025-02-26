@@ -1,13 +1,21 @@
 export class interfaceController {
-    
+    public static instance:interfaceController;
     private display: HTMLInputElement; 
 
     constructor() {
+        
         this.display = document.getElementById('display') as HTMLInputElement; 
-        this.initializeEventLitseners();   
+        this.initializeEventListeners();   
     }
 
-    private initializeEventLitseners () {
+    // public static getInstance(): interfaceController {
+    //     if (!interfaceController.instance) {
+    //         interfaceController.instance = new interfaceController();
+    //     }
+    //     return interfaceController.instance;
+    // }
+
+    private initializeEventListeners () {
         // Number Buttons
         document.querySelectorAll('.number').forEach(button => {
             button.addEventListener('click', () => {
@@ -31,19 +39,22 @@ export class interfaceController {
         document.querySelector('.clear')?.addEventListener('click', () => {
             this.clearDisplay();
         });
+
     }
 
     private appendToDisplay (value: string) {
         this.display.value += value;
-        console.log('Display Values: ', value)
     }
 
     private calculate() {
-        // Todo; perform an injection to the calculate function
+        const result = this.display.value;
+        console.log("Appended Result: ", result)
+        
     }
 
     private clearDisplay() {
         this.display.value = ''
     }
-
 }
+//  new interfaceController();
+

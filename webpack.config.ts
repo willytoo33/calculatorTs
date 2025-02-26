@@ -1,5 +1,4 @@
 import path from 'path';
-import webpack from 'webpack';
 import { Configuration, WebpackPluginInstance } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
@@ -10,6 +9,7 @@ const config: Configuration & { devServer?: any } = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/dist/',
     clean: true,
   },
   resolve: {
@@ -51,7 +51,7 @@ const config: Configuration & { devServer?: any } = {
     compress: true,
     port: 9000,
     open: true,
-    hot: true,
+    hot: false,
     historyApiFallback: true,
   },
 };
